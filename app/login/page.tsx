@@ -6,8 +6,6 @@ export default function page(){
  
  const [email,setEmail] = useState('')
  const [password,setPassword] = useState('');
- const [company,setCompany] = useState('');
- const [isTouched,setIsTouched] = useState(false);
  
 
  const PasswordErr =()=>{
@@ -18,14 +16,14 @@ export default function page(){
 
  const isValid = () =>{
   return (
-    email && password.length >= 8 && company ? true :false
+    email && password ? true :false
   ) 
  }
 
  const handleSubmit = async (e:any)=>{
     e.preventDefault();
     try{
-    const response = await axios.post(`http://localhost:4000/signin`,{email,password,company}); 
+    const response = await axios.post(`http://localhost:4000/login`,{email,password}); 
     console.log(response); 
     }catch(err){
        console.log(err) 
@@ -46,25 +44,14 @@ export default function page(){
       />
       <label>Password</label>
       <input 
-        type="password" 
-        placeholder="********"
+        type="password"
         value={password} 
         onChange={(e)=>setPassword(e.target.value)}
-        onBlur ={()=>setIsTouched(true)}
         className="text-black rounded"
       />  
-        {password.length <= 8 && isTouched && <PasswordErr/> }
-      <label>Company</label>
-      <input 
-        type="text" 
-        placeholder="you&me.co"
-        value={company} 
-        onChange={(e)=>setCompany(e.target.value)}
-        className="text-black rounded"
-      />
       <button type='submit' disabled ={!isValid()} className="rounder w-full px-4 my-2 rounded-2xl border-gray-500 border-solid border-2 bg-red-500">Submit</button>
      </form>
     </div>
    </div> 
   )
-}
+}   
