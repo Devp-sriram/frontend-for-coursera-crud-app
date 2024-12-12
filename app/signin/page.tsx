@@ -33,8 +33,8 @@ export default function page(){
 }
 
   return (
-   <div className="w-screen h-screen p-10 flex justify-center items-start">
-    <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 justify-center items-center border-gray-500 border-solid border-2 rounded">
+   <div className="w-1/2 h-1/2 p-10 flex justify-center items-start">
+    <div className="w-full lg:w-1/2 xl:w-1/3 p-4 justify-center items-center border-gray-500 border-solid border-2 rounded">
      <form onSubmit={handleSubmit} className="flex flex-col w-full gap-2">
       <label>Email</label>
       <input 
