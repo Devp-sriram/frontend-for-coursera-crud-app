@@ -18,12 +18,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setAuthState({ isAuthenticated: true, user: JSON.parse(storedUser) });
+      setAuthState({ ...authState,isAuthenticated: true, user: JSON.parse(storedUser) });
     }
   }, []);
 
   const login = (user: any) => {
-    setAuthState({ isAuthenticated: true, user });
+    setAuthState({...authState,isAuthenticated: true, user });
+    console.log(user);
+    console.log(authState.isAuthenticated, authState.user)
+    
     localStorage.setItem('user', JSON.stringify(user));
   };
 

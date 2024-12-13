@@ -5,6 +5,7 @@ export default function header(){
   <nav className="w-full h-6 flex justify-between">
     <ul className="flex gap-4">
       <li><Link href="/">Home</Link></li>
+      <li> <Link href="/dashboard">dashboard</Link> </li> 
     </ul>
     <ul className="flex gap-4">
       <li> <Link href="/login">Login</Link> </li>

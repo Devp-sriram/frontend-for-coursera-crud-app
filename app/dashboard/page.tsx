@@ -6,8 +6,7 @@ import { useAuth } from '../context/AuthContext';
 
 export default function page(){
   const { isAuthendicated , user } = useAuth();
-  console.log(isAuthendicated , user )
-  if(isAuthendicated){redirect('/login')}
+  if(!isAuthendicated){redirect('/login')}
   const employee = user.data; 
 
   return(
