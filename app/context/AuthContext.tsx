@@ -1,3 +1,5 @@
+'use client'
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface AuthState {
@@ -5,7 +7,7 @@ interface AuthState {
   user: any;
 }
 
-const AuthContext = createContext<AuthState>({ isAuthenticated: false, user: null });
+const AuthContext : any = createContext({ isAuthenticated: false, user: null });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>({
