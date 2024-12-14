@@ -28,7 +28,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isAuthenticated: true,
       user
     }));
-    console.log(user);
     localStorage.setItem('user', JSON.stringify(user));
   };
 

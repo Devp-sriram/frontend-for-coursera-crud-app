@@ -2,10 +2,15 @@
 
 import { redirect } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
+import {useState} from 'react'
 
 export default function DashboardPage() {
   const { isAuthenticated, user } = useAuth();
-  console.log(isAuthenticated, user);
+  const [ employeDetails , setEmployeDetails] = useState({
+    firstname : "",
+    lastname : "",
+    dep : ""
+  });
 
   if (!isAuthenticated) {
     redirect('/login');
@@ -19,10 +24,23 @@ export default function DashboardPage() {
 
   return (
     <>
-      <h1>Company: {user.company}</h1>
+      <h1 className='justify-center'>Employees</h1>
+      <div>
+        <form>
+          <label>firstname</label>
+          <input type='text' />
+          
+          <label>lastname</label>
+          <input type='text' />
+          
+          <label>department</label>
+          <input type='text' />
+        </form>
+      </div>
+      
       <ul>
-        {employees.map((emp, index) => (
-          <li key={index}>{emp.firstname} {emp.lastname}--{emp.dep}</li>
+        {employees.map((emp) => (
+          <li key={emp._id}>{emp.firstname} {emp.lastname}--{emp.dep}</li>
         ))}
       </ul>
     </>
