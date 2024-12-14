@@ -23,10 +23,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = (user: any) => {
-    setAuthState({...authState,isAuthenticated: true, user });
+    setAuthState(prevState => ({
+      ...prevState,
+      isAuthenticated: true,
+      user
+    }));
     console.log(user);
-    console.log(authState.isAuthenticated, authState.user)
-    
     localStorage.setItem('user', JSON.stringify(user));
   };
 

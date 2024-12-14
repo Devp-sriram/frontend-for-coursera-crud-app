@@ -1,22 +1,30 @@
 'use client'
+
 import { redirect } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 
+export default function DashboardPage() {
+  const { isAuthenticated, user } = useAuth();
+  console.log(isAuthenticated, user);
 
+  if (!isAuthenticated) {
+    redirect('/login');
+  }
 
-export default function page(){
-  const { isAuthendicated , user } = useAuth();
-  if(!isAuthendicated){redirect('/login')}
-  const employee = user.data; 
+  if (!user || !user.data) {
+    return <div>Loading...</div>;
+  }
 
-  return(
-    <>    
-    <h1>company{user.company}</h1>
-    <ul>
-    {employee.map((usr,i)=> <li key = {i}>{usr.firstname} {usr.lastname} {usr.dep}</li>) }
-    </ul>
+  const employees = user.data;
+
+  return (
+    <>
+      <h1>Company: {user.company}</h1>
+      <ul>
+        {employees.map((emp, index) => (
+          <li key={index}>{emp.firstname} {emp.lastname}--{emp.dep}</li>
+        ))}
+      </ul>
     </>
-  )
+  );
 }
-
-

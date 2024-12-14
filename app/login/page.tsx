@@ -1,8 +1,8 @@
 'use client'
 import { useState } from "react";
-import { redirect } from 'next/navigation';
 import axios from 'axios';
 import { useAuth } from "../context/AuthContext";
+import { useRouter } from 'next/navigation';
 
 export default function page(){
  
@@ -10,7 +10,7 @@ export default function page(){
  const [password,setPassword] = useState('');
  const [err,setErr]= useState('');
  const {login} = useAuth()
-
+ const router = useRouter();
 
 const PasswordErr = ({ value }: { value: any }) => {
   return (
@@ -30,13 +30,11 @@ const PasswordErr = ({ value }: { value: any }) => {
  const handleSubmit = async (e:any)=>{
     e.preventDefault();
     try{
-    const response : any = await axios.post(`http://localhost:4000/login`,{email,password});
-    login(response.data);
-    console.log(response);
-    redirect('/dashboard')
-    }catch(err: any){
-    setErr(typeof err.response?.data === 'object' ? err.response.data.message : err.message);
-    console.log(err); 
+      const response : any = await axios.post(`http://localhost:4000/login`,{email,password});
+      login(response.data);
+      router.push('/dashboard');
+    }catch(error: any){
+      setErr(error);
     }
 }
 
