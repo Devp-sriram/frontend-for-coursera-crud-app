@@ -59,7 +59,7 @@ const PasswordErr = ({ value }: { value: any }) => {
       />
       {err && <PasswordErr value={err}/>}
       <button type='submit' disabled ={!isValid()} className="rounder w-full px-4 my-2 rounded-2xl border-gray-500 border-solid border-2 bg-red-500">Submit</button>
-     </form>
+     </form> 
     </div>
    </div>
   )
