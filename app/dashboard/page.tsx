@@ -1,118 +1,112 @@
 'use client'
 
 import { redirect } from 'next/navigation';
-import { useAuth , AuthState , Data } from '../context/AuthContext';
-import { useState } from 'react'
-import axios from 'axios';
+import { useEffect, useState } from 'react'
+import { useAuth , Data } from '../context/AuthContext'
+import AddEmployee from './AddEmployee';
 
 
 export default function DashboardPage() {
 
-  const {update} = useAuth()
 
   const { isAuthenticated , user } = useAuth();
+  
   const [ employeDetails , setEmployeDetails] = useState({
     firstname : "",
     lastname : "",
-    dep : ""
+    dep : "",
+    _id : ""
+
   });
+  useEffect(()=>{
+    console.log(employeDetails)
+  },[employeDetails])
 
-  if (!isAuthenticated) {
-    redirect('/login');
-  }
 
+  const [edit,setEdit] = useState({
+      status: false,
+      id : ""
+  });
+  
   if (!user || !user.data) {
     return <div>Loading...</div>;
   }
+  
+  if (!isAuthenticated) {
+    redirect('/login');
+  }  
+  const employees = user?.data;
 
-  const employees = user.data;
 
-  const validateEmployeDetails = () => {
-    return employeDetails.firstname && employeDetails.lastname && employeDetails.dep != "" ? true : false
-  }
-  const clearEmployeDetails = () => {
-    setEmployeDetails(prevState =>({
-        ...prevState,
-        firstname : '',
-        lastname  : '',
-        dep : ''
-      })
-    )
-  }
-
-  const handleSubmit = async (e:any)=>{
-    e.preventDefault();
-    try{
-      const response : any = await axios.post(`http://localhost:4000/addEmployee/${user._id}`,{...employeDetails});
-      console.log(response);
-      clearEmployeDetails()
-      update(response.data.allEmployees);
-    }catch(error: any){
-      console.log(error);
-    }
-  }
 
   return (
     <div className='w-full flex flex-col justify-center items-center'>
+      <AddEmployee/>
       <h1 className='justify-center'>Employees</h1>
-      <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 justify-center items-center border-gray-500 border-solid border-2" >
-        <form onSubmit={handleSubmit} className='flex flex-col' >
-          <label>firstname</label>
-          <input 
-            type='text'
-            value={employeDetails.firstname}
-            onChange={e=>setEmployeDetails((prevState)=>({
-                ...prevState ,firstname : e.target.value,
-                })
-              )
-            }   
-            className="text-black rounded"
-          />
-          
-          <label>lastname</label>
-          <input 
-            type='text' 
-            value={employeDetails.lastname}
-            onChange={e=>setEmployeDetails((prevState)=>({
-                ...prevState ,lastname : e.target.value,
-                })
-              )
-            }
-            className="text-black rounded"
-          />
-          
-          <label>Department</label>
-            <select
-              value={employeDetails.dep || ''}
-              onChange={(e) => setEmployeDetails(prev => ({...prev, dep: e.target.value}))}
-              className="text-black rounded"
-            >
-              <option value="">Select Department</option>
-              <option value="dentist">Dentist</option>
-              <option value="dermatologist">Dermatologist</option>
-              <option value="gynecologist">Gynecologist</option>
-            </select>
-          <button 
-            type='submit' 
-            disabled ={!validateEmployeDetails} 
-            className="rounder w-full px-4 my-2 rounded-2xl border-gray-500 border-solid border-2 bg-red-500"
-          >
-            Add new Employee
-          </button>
-        </form>
-      </div>
       
-      <div className=''>
-          <ul>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-black shadow-md rounded-lg overflow-hidden">
+          <thead className="bg-gray-500">
+            <tr>
+              <th className="p-3">Name</th>
+              <th className="p-3">Department</th>
+              <th className="p-3">Actions</th>
+              </tr>
+          </thead>
+          <tbody>
             {employees.map((emp : Data) => (
-                <li key={emp._id}>
-                  <span>{emp.firstname} {emp.lastname}--{emp.dep}</span>
-                  <button className='text-white'>edit</button>
-                </li>
-            ))}
-          </ul>
+              <tr key={emp._id} className="border-b">
+                <td className="p-3">
+                  {edit.status? (
+                    <>
+                    <input
+                      type="text"
+                      value={emp.firstname}
+                      onChange={(e) =>setEmployeDetails(prev => ({...prev, firstname: e.target.value , _id :emp._id}))}
+                      className="w-full p-2 border rounded text-black"
+                    />
+                    <input
+                      type="text"
+                      value={emp.lastname}
+                      onChange={(e) =>setEmployeDetails(prev => ({...prev, lastname: e.target.value, _id :emp._id }))}
+                      className="w-full p-2 border rounded text-black"
+                    />
+                    </>
+                  ) : (
+                    <span className="font-medium">{emp.firstname} {emp.lastname}</span>
+                  )}
+                </td>
+                <td className="p-3">
+                    {edit.status ?(
+                      <select
+                        value={emp.dep || ''}
+                        onChange={(e) => setEmployeDetails(prev => ({...prev, dep: e.target.value, _id :emp._id }))}
+                        className="text-black rounded"
+                      >
+                        <option value="">Select Department</option>
+                        <option value="dentist">Dentist</option>
+                        <option value="dermatologist">Dermatologist</option>
+                        <option value="gynecologist">Gynecologist</option>
+                      </select>
+                      ):(
+                      <span>{emp.dep}</span>
+                    )}
+                </td>
+              <td className="p-3 flex justify-end items-center space-x-2">
+                
+                  <button
+                    onClick={() => setEdit(prevState=>({ ...prevState,status: !edit.status}))}
+                    className="px-4 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
+                  >
+                    {edit.status ? 'save' : 'edit'}
+                  </button>
+              </td>
+              </tr>
+              ))}
+          </tbody>
+        </table>
       </div>
 
-    </div>
+      </div>
   );
 }
