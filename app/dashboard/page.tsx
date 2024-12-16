@@ -1,16 +1,16 @@
 'use client'
 
 import { redirect } from 'next/navigation';
-import { useAuth } from '../context/AuthContext';
+import { useAuth , AuthState , Data } from '../context/AuthContext';
 import { useState } from 'react'
 import axios from 'axios';
 
 
 export default function DashboardPage() {
 
-  const {login} = useAuth()
+  const {update} = useAuth()
 
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated , user } = useAuth();
   const [ employeDetails , setEmployeDetails] = useState({
     firstname : "",
     lastname : "",
@@ -28,7 +28,7 @@ export default function DashboardPage() {
   const employees = user.data;
 
   const validateEmployeDetails = () => {
-    return employeDetails.firstname && employeDetails.lastname && employeDetails.dep ? true : false
+    return employeDetails.firstname && employeDetails.lastname && employeDetails.dep != "" ? true : false
   }
   const clearEmployeDetails = () => {
     setEmployeDetails(prevState =>({
@@ -46,16 +46,16 @@ export default function DashboardPage() {
       const response : any = await axios.post(`http://localhost:4000/addEmployee/${user._id}`,{...employeDetails});
       console.log(response);
       clearEmployeDetails()
-      login(response.data.allEmployees);
+      update(response.data.allEmployees);
     }catch(error: any){
       console.log(error);
     }
   }
 
   return (
-    <>
+    <div className='w-full flex flex-col justify-center items-center'>
       <h1 className='justify-center'>Employees</h1>
-      <div >
+      <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 justify-center items-center border-gray-500 border-solid border-2" >
         <form onSubmit={handleSubmit} className='flex flex-col' >
           <label>firstname</label>
           <input 
@@ -75,7 +75,7 @@ export default function DashboardPage() {
             value={employeDetails.lastname}
             onChange={e=>setEmployeDetails((prevState)=>({
                 ...prevState ,lastname : e.target.value,
-                })                    
+                })
               )
             }
             className="text-black rounded"
@@ -102,11 +102,17 @@ export default function DashboardPage() {
         </form>
       </div>
       
-      <ul>
-        {employees.map((emp) => (
-          <li key={emp._id}>{emp.firstname} {emp.lastname}--{emp.dep}</li>
-        ))}
-      </ul>
-    </>
+      <div className=''>
+          <ul>
+            {employees.map((emp : Data) => (
+                <li key={emp._id}>
+                  <span>{emp.firstname} {emp.lastname}--{emp.dep}</span>
+                  <button className='text-white'>edit</button>
+                </li>
+            ))}
+          </ul>
+      </div>
+
+    </div>
   );
 }
