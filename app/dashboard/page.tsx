@@ -1,7 +1,7 @@
 'use client'
 
 import { redirect } from 'next/navigation';
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useAuth , Data } from '../context/AuthContext'
 import axios,{AxiosResponse} from 'axios';
 import AddEmployee from './AddEmployee';
@@ -11,6 +11,8 @@ export default function DashboardPage() {
 
 
   const { isAuthenticated , user } = useAuth();
+  const { update } = useAuth();
+
   
   const [ employeDetails , setEmployeDetails] = useState({
     firstname : "",
@@ -22,21 +24,17 @@ export default function DashboardPage() {
       status: false,
       id : ""
   });
-  useEffect(()=>{
-    console.log(employeDetails)
-    console.log(edit);
-  },[employeDetails, edit])
 
 
-
+  if (!isAuthenticated) {
+    redirect('/login');
+  } 
   
   if (!user || !user.data) {
     return <div>Loading...</div>;
   }
   
-  if (!isAuthenticated) {
-    redirect('/login');
-  }  
+   
   const employees = user?.data;
   
   const handleEdit = (empId : string) =>{
@@ -47,6 +45,7 @@ export default function DashboardPage() {
     try{
       const response : AxiosResponse = await axios.put(`http://localhost:4000/updateEmployee/${user._id}/${edit.id}`,{...employeDetails});
       console.log(response);
+      await update(edit.id);
     }catch(error: any){
       console.log(error);
     }
@@ -108,7 +107,7 @@ export default function DashboardPage() {
                     )}
                 </td>
               <td className="p-3 flex justify-end items-center space-x-2">
-                
+                  {!edit.status && 
                   <button
                     onClick={()=>{
                       handleEdit(emp._id)
@@ -118,6 +117,8 @@ export default function DashboardPage() {
                   >
                     edit
                   </button>
+                  }
+                  {/* appear when the user clicks edit*/}
                   {edit.status &&
 
                   <button

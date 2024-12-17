@@ -1,16 +1,30 @@
 'use client'
 import { useState } from "react";
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from 'next/navigation';
+
+
+
+export async function fetchData(email : string , password : string){
+  try{
+      const response : AxiosResponse = await axios.post(`http://localhost:4000/login`,{email,password});
+      console.log(response)
+      return response
+    }catch(error: any){
+      console.log(error);
+    }
+}
+
 
 export default function page(){
  
  const [email,setEmail] = useState('')
  const [password,setPassword] = useState('');
  const [err,setErr]= useState('');
- const {login} = useAuth()
  const router = useRouter();
+
+const { login  } = useAuth()
 
 const PasswordErr = ({ value }: { value: any }) => {
   return (
@@ -30,13 +44,18 @@ const PasswordErr = ({ value }: { value: any }) => {
  const handleSubmit = async (e:any)=>{
     e.preventDefault();
     try{
-      const response : any = await axios.post(`http://localhost:4000/login`,{email,password});
-      login(response.data);
-      router.push('/dashboard');
+      const response = await fetchData(email,password); 
+      if(response){
+        login(response.data);
+    
+        if(response.status === 200){
+          router.push('/dashboard')
+        };
+      }
     }catch(error: any){
       setErr(error);
     }
-}
+  }
 
   return (
    <div className="w-full h-full p-10 flex justify-center items-start ">

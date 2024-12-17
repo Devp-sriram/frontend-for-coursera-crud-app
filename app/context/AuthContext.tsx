@@ -1,12 +1,9 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { fetchData } from '../login/page';
 
-export interface AuthState {
-  isAuthenticated: boolean;
-  user: any;
-}
-
+// D types
 export interface Data{
   firstname : string,
   lastname : string,
@@ -14,12 +11,28 @@ export interface Data{
   _id : string,
 }
 
+export interface User{
+    _id: string,
+    email: string,
+    password: string,
+    company: string,
+    data: [Data],
+    createdAt: string,
+    updatedAt:string,
+    __v: number 
+}
+
+export interface AuthState {
+  isAuthenticated: boolean;
+  user: any;
+}
+
 const AuthContext : any = createContext({ isAuthenticated: false, user: null });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
-    user: null,
+    user: "",
   });
 
   useEffect(() => {
@@ -44,37 +57,59 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
 
-const create = (newData: Data[]) => {
-  const updatedUser = {
-    ...authState.user,
-    data: [...authState.user.data, ...newData.filter(item => 
-      !authState.user.data.some((existingItem : Data) => existingItem._id === item._id)
-    )]
+  const create = (newData: Data[]) => {
+    const updatedUser = {
+      ...authState.user,
+      data: [...authState.user.data, ...newData.filter(item => 
+        !authState.user.data.some((existingItem : Data) => existingItem._id === item._id)
+      )]  
+    };
+
+    setAuthState(prevState => ({
+      ...prevState,
+      user: updatedUser
+    }));
+
   };
 
-  setAuthState(prevState => ({
-    ...prevState,
-    user: updatedUser
-  }));
+  const update = async (id : string)=>{
+    try{
+      const response = await fetchData(authState.user.email,authState.user.password)
+      if(response){
+        let updatedEmployee = response.data.data.find( (data : Data) => data._id === id)
+        if (updatedEmployee){
+          setAuthState(prevState => ({
+            ...prevState,
+            user: {
+              ...prevState.user,
+              data: prevState.user.data.map((item : Data) => 
+                item._id === id ? updatedEmployee : item
+              )
+            }
+          })
+          )
+        };
+        localStorage.setItem('user', JSON.stringify(response.data));  
+      }
+    }catch(error: any){
+      console.log(error)
+    }
+  }
 
-};
-
-
-
-useEffect(() => {
-      if(authState.user !== null || "" || false){
+  useEffect(() => {
+      if(authState.user.data){
           localStorage.setItem('user', JSON.stringify(authState.user));
       }
   }, [authState]);
 
 
-  {/*const logout = () => {
+  const logout = () => {
     setAuthState({ isAuthenticated: false, user: null });
     localStorage.removeItem('user');
-  };*/}
+  };
 
   return (
-    <AuthContext.Provider value={{ ...authState, login , create }}>
+    <AuthContext.Provider value={{ ...authState, login , logout , create , update }}>
       {children}
     </AuthContext.Provider>
   );
