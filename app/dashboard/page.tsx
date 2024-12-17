@@ -11,7 +11,7 @@ export default function DashboardPage() {
 
 
   const { isAuthenticated , user } = useAuth();
-  const { update } = useAuth();
+  const { update , deleteData } = useAuth();
 
   
   const [ employeDetails , setEmployeDetails] = useState({
@@ -22,7 +22,7 @@ export default function DashboardPage() {
 
   const [edit,setEdit] = useState({
       status: false,
-      id : ""
+      id : "",
   });
 
 
@@ -50,6 +50,19 @@ export default function DashboardPage() {
       console.log(error);
     }
  
+  }
+  
+  const handledelete = async (id : string) =>{
+    try{
+      const response : AxiosResponse = await axios.delete(`http://localhost:4000/deleteEmployee/${user._id}/${id}`);
+      console.log(response);
+      if(response.status === 200){
+        await deleteData(id);
+      }
+    }catch(error: any){
+      console.log(error);
+    }
+
   }
 
 
@@ -107,16 +120,27 @@ export default function DashboardPage() {
                     )}
                 </td>
               <td className="p-3 flex justify-end items-center space-x-2">
-                  {!edit.status && 
+                  {!edit.status &&
+                  <>
+  
                   <button
                     onClick={()=>{
                       handleEdit(emp._id)
                       setEmployeDetails((prev)=>({...prev,...emp}))
                       }}
-                    className="px-4 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
+                    className="px-2 py-1 bg-green-400 text-white rounded hover:bg-green-700 transition duration-300"
                   >
-                    edit
+                    Edit
                   </button>
+
+                  <button
+                    onClick={ async()=> await handledelete(emp._id) }
+                    className="px-2 py-1 bg-red-400 text-white rounded hover:bg-red-700 transition duration-300"
+                  >
+                    Delete
+                  </button> 
+  
+                  </>
                   }
                   {/* appear when the user clicks edit*/}
                   {edit.status &&

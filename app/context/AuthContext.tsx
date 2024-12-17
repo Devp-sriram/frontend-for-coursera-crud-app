@@ -94,7 +94,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }catch(error: any){
       console.log(error)
     }
-  }
+  };
+    
+  const deleteData = async (id : string)=>{
+    setAuthState(prev => ({
+      ...prev,
+      user : {
+        ...prev.user,
+        data: prev.user.data.filter((data : Data) => data._id !== id)
+      }
+    }))
+  } 
 
   useEffect(() => {
       if(authState.user.data){
@@ -109,7 +119,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ ...authState, login , logout , create , update }}>
+    <AuthContext.Provider value={{ ...authState, login , logout , create , update , deleteData }}>
       {children}
     </AuthContext.Provider>
   );
