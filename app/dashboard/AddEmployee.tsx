@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 
 
 export default function AddEmployee(){
-  const { update } = useAuth();
+  const { create } = useAuth();
 
   const { user } = useAuth();
   const [ employeDetails , setEmployeDetails] = useState({
@@ -33,7 +33,7 @@ export default function AddEmployee(){
       const response : AxiosResponse = await axios.post(`http://localhost:4000/addEmployee/${user._id}`,{...employeDetails});
       console.log(response);
       clearEmployeDetails()
-      update(response.data.allEmployees);
+      create(response.data.allEmployees);
     }catch(error: any){
       console.log(error);
     }

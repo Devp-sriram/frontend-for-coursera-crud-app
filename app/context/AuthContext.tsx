@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
 
-const update = (newData: Data[])=> {
+const create = (newData: Data[]) => {
   const updatedUser = {
     ...authState.user,
     data: [...authState.user.data, ...newData.filter(item => 
@@ -59,6 +59,8 @@ const update = (newData: Data[])=> {
 
 };
 
+
+
 useEffect(() => {
       if(authState.user !== null || "" || false){
           localStorage.setItem('user', JSON.stringify(authState.user));
@@ -72,7 +74,7 @@ useEffect(() => {
   };*/}
 
   return (
-    <AuthContext.Provider value={{ ...authState, login , update }}>
+    <AuthContext.Provider value={{ ...authState, login , create }}>
       {children}
     </AuthContext.Provider>
   );

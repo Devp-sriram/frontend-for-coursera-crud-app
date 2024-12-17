@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react'
 import { useAuth , Data } from '../context/AuthContext'
+import axios,{AxiosResponse} from 'axios';
 import AddEmployee from './AddEmployee';
 
 
@@ -15,18 +16,19 @@ export default function DashboardPage() {
     firstname : "",
     lastname : "",
     dep : "",
-    _id : ""
-
   });
-  useEffect(()=>{
-    console.log(employeDetails)
-  },[employeDetails])
-
 
   const [edit,setEdit] = useState({
       status: false,
       id : ""
   });
+  useEffect(()=>{
+    console.log(employeDetails)
+    console.log(edit);
+  },[employeDetails, edit])
+
+
+
   
   if (!user || !user.data) {
     return <div>Loading...</div>;
@@ -36,7 +38,20 @@ export default function DashboardPage() {
     redirect('/login');
   }  
   const employees = user?.data;
-
+  
+  const handleEdit = (empId : string) =>{
+    setEdit(prevState =>({...prevState,status:true,id:empId}))
+  }
+  
+  const handleSave = async () =>{
+    try{
+      const response : AxiosResponse = await axios.put(`http://localhost:4000/updateEmployee/${user._id}/${edit.id}`,{...employeDetails});
+      console.log(response);
+    }catch(error: any){
+      console.log(error);
+    }
+ 
+  }
 
 
   return (
@@ -57,18 +72,18 @@ export default function DashboardPage() {
             {employees.map((emp : Data) => (
               <tr key={emp._id} className="border-b">
                 <td className="p-3">
-                  {edit.status? (
+                  {( edit.status && edit.id === emp._id )? (
                     <>
                     <input
                       type="text"
-                      value={emp.firstname}
-                      onChange={(e) =>setEmployeDetails(prev => ({...prev, firstname: e.target.value , _id :emp._id}))}
+                      value={employeDetails.firstname}
+                      onChange={(e) =>setEmployeDetails(prev => ({...prev, firstname: e.target.value }))}
                       className="w-full p-2 border rounded text-black"
                     />
                     <input
                       type="text"
-                      value={emp.lastname}
-                      onChange={(e) =>setEmployeDetails(prev => ({...prev, lastname: e.target.value, _id :emp._id }))}
+                      value={employeDetails.lastname}
+                      onChange={(e) =>setEmployeDetails(prev => ({...prev, lastname: e.target.value,}))}
                       className="w-full p-2 border rounded text-black"
                     />
                     </>
@@ -77,10 +92,10 @@ export default function DashboardPage() {
                   )}
                 </td>
                 <td className="p-3">
-                    {edit.status ?(
+                    {( edit.status && edit.id === emp._id )?(
                       <select
-                        value={emp.dep || ''}
-                        onChange={(e) => setEmployeDetails(prev => ({...prev, dep: e.target.value, _id :emp._id }))}
+                        value={employeDetails.dep}
+                        onChange={(e) => setEmployeDetails(prev => ({...prev, dep: e.target.value}))}
                         className="text-black rounded"
                       >
                         <option value="">Select Department</option>
@@ -95,11 +110,26 @@ export default function DashboardPage() {
               <td className="p-3 flex justify-end items-center space-x-2">
                 
                   <button
-                    onClick={() => setEdit(prevState=>({ ...prevState,status: !edit.status}))}
+                    onClick={()=>{
+                      handleEdit(emp._id)
+                      setEmployeDetails((prev)=>({...prev,...emp}))
+                      }}
                     className="px-4 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
                   >
-                    {edit.status ? 'save' : 'edit'}
+                    edit
                   </button>
+                  {edit.status &&
+
+                  <button
+                    onClick={async () =>{
+                      handleSave()
+                      setEdit(prevState=>({ ...prevState,status: !edit.status}))
+                    }}
+                    className="px-4 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
+                  >
+                    save
+                  </button>
+                  }
               </td>
               </tr>
               ))}
