@@ -1,5 +1,6 @@
 'use client'
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 export default function page(){
@@ -8,6 +9,8 @@ export default function page(){
  const [password,setPassword] = useState('');
  const [company,setCompany] = useState('');
  const [isTouched,setIsTouched] = useState(false);
+
+ const router = useRouter();
  
 
  const PasswordErr =()=>{
@@ -26,7 +29,10 @@ export default function page(){
     e.preventDefault();
     try{
     const response = await axios.post(`http://localhost:4000/signin`,{email,password,company}); 
-    console.log(response); 
+    console.log(response);
+      if(response.status === 200){
+          router.push('/login')
+      };
     }catch(err){
        console.log(err) 
     }
@@ -47,7 +53,7 @@ export default function page(){
       <label>Password</label>
       <input 
         type="password" 
-        placeholder="********"
+        placeholder="min 8 & Atleast"
         value={password} 
         onChange={(e)=>setPassword(e.target.value)}
         onBlur ={()=>setIsTouched(true)}

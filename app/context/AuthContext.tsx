@@ -107,7 +107,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   } 
 
   useEffect(() => {
-      if(authState.user.data){
+      if(authState.isAuthenticated){
           localStorage.setItem('user', JSON.stringify(authState.user));
       }
   }, [authState]);
