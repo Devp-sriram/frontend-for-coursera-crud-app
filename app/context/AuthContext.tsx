@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { fetchData } from '../login/page';
+import { fetchData } from '../utils/authUtils';
 
 // D types
 export interface Data{
