@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 export async function fetchData(email : string , password : string){
   try{
       const response : AxiosResponse = await axios.post(`http://localhost:4000/login`,{email,password});
-      console.log(response)
       return response
     }catch(error: any){
       console.log(error);
@@ -44,18 +43,13 @@ const PasswordErr = ({ value }: { value: any }) => {
  const handleSubmit = async (e:any)=>{
     e.preventDefault();
     try{
-      const response = await fetchData(email,password); 
+      const response = await axios.post(`http://localhost:4000/login`,{email,password});
       if(response?.status === 200){
         login(response.data);
-    
-        if(response.status === 200){
-          router.push('/dashboard')
-        }else{
-            setErr(response?.data.message) 
-        }
+        router.push('/dashboard');
       }
     }catch(error: any){
-      setErr(error);
+      setErr(error?.response.data);
     }
   }
 
