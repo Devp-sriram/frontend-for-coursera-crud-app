@@ -5,6 +5,8 @@ import { useState } from 'react'
 import { useAuth , Data } from '../context/AuthContext'
 import axios,{AxiosResponse} from 'axios';
 import AddEmployee from './AddEmployee';
+import dotenv from 'dotenv'
+dotenv.config()
 
 
 export default function DashboardPage() {
@@ -43,7 +45,7 @@ export default function DashboardPage() {
   
   const handleSave = async () =>{
     try{
-      const response : AxiosResponse = await axios.put(`http://localhost:4000/updateEmployee/${user._id}/${edit.id}`,{...employeDetails});
+      const response : AxiosResponse = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/updateEmployee/${user._id}/${edit.id}`,{...employeDetails});
       console.log(response);
       await update(edit.id);
     }catch(error: any){
@@ -54,7 +56,7 @@ export default function DashboardPage() {
   
   const handledelete = async (id : string) =>{
     try{
-      const response : AxiosResponse = await axios.delete(`http://localhost:4000/deleteEmployee/${user._id}/${id}`);
+      const response : AxiosResponse = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/deleteEmployee/${user._id}/${id}`);
       console.log(response);
       if(response.status === 200){
         await deleteData(id);

@@ -1,6 +1,8 @@
 import { useAuth , Data } from '../context/AuthContext';
 import { useState } from 'react'
 import axios, { AxiosResponse } from 'axios';
+import dotenv from 'dotenv'
+dotenv.config()
 
 
 export default function AddEmployee(){
@@ -30,7 +32,7 @@ export default function AddEmployee(){
   const handleSubmit = async (e:any)=>{
     e.preventDefault();
     try{
-      const response : AxiosResponse = await axios.post(`http://localhost:4000/addEmployee/${user._id}`,{...employeDetails});
+      const response : AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/addEmployee/${user._id}`,{...employeDetails});
       console.log(response);
       clearEmployeDetails()
       create(response.data.allEmployees);

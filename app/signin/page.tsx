@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import dotenv from 'dotenv'
+dotenv.config()
 
 export default function page(){
  
@@ -28,7 +30,7 @@ export default function page(){
  const handleSubmit = async (e:any)=>{
     e.preventDefault();
     try{
-    const response = await axios.post(`http://localhost:4000/signin`,{email,password,company}); 
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/signin`,{email,password,company}); 
     console.log(response);
       if(response.status === 200){
           router.push('/login')

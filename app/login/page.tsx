@@ -3,12 +3,14 @@ import { useState } from "react";
 import axios, { AxiosResponse } from 'axios';
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from 'next/navigation';
+import dotenv from 'dotenv'
+dotenv.config()
 
 
 
 export async function fetchData(email : string , password : string){
   try{
-      const response : AxiosResponse = await axios.post(`http://localhost:4000/login`,{email,password});
+      const response : AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`,{email,password});
       return response
     }catch(error: any){
       console.log(error);
@@ -43,10 +45,11 @@ const PasswordErr = ({ value }: { value: any }) => {
  const handleSubmit = async (e:any)=>{
     e.preventDefault();
     try{
-      const response = await axios.post(`http://localhost:4000/login`,{email,password});
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`,{email,password});
       if(response?.status === 200){
-        login(response.data);
+        login(response.data)
         router.push('/dashboard');
+        
       }
     }catch(error: any){
       setErr(error?.response.data);
