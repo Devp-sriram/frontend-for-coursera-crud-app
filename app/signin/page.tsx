@@ -27,7 +27,7 @@ export default function Page(){
   ) 
  }
 
- const handleSubmit = async (e:any)=>{
+ const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try{
     const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/signin`,{email,password,company}); 

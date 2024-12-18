@@ -16,7 +16,7 @@ export type User = {
     email : string ,
     password : string ,
     company : string,
-    data : Data[]| any[],
+    data : Data[],
     createdAt : string ,
     updatedAt :string ,
     __v : number 
@@ -27,7 +27,18 @@ export interface AuthState {
   user: User ;
 }
 
-const AuthContext : any = createContext({ isAuthenticated: false, user: null });
+const AuthContext = createContext<AuthState>({ isAuthenticated: false, user: 
+    { 
+      _id : "",
+      email : "",
+      password : "",
+      company : "",
+      data : [],
+      createdAt :"",
+      updatedAt : "",
+      __v : 0 
+    } 
+});
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>({

@@ -27,10 +27,10 @@ export default function Page(){
 
 const { login  } = useAuth()
 
-const PasswordErr = ({ value }: { value: any }) => {
+const PasswordErr = ({ value }: { value : string }) => {
   return (
     <p className="text-white bg-red-300 rounded-xl justify-center p-1">
-      {typeof value === 'string' ? value : JSON.stringify(value)}
+      { value }
     </p>
   );
 };
@@ -42,7 +42,7 @@ const PasswordErr = ({ value }: { value: any }) => {
   ) 
  }
 
- const handleSubmit = async (e:any)=>{
+ const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try{
       const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`,{email,password});
@@ -51,7 +51,7 @@ const PasswordErr = ({ value }: { value: any }) => {
         router.push('/dashboard');
         
       }
-    }catch(error: any){
+    }catch(error: unknown){
       setErr(error?.response.data);
     }
   }
