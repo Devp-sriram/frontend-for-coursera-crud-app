@@ -1,6 +1,6 @@
 'use client'
 import { useState } from "react";
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from 'next/navigation';
 import dotenv from 'dotenv'
@@ -29,12 +29,12 @@ const PasswordErr = ({ value }: { value : string }) => {
   return (
     email && password ? true :false
   ) 
- }
+ };
 
  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try{
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`,{email,password});
+      const response  = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`,{email,password});
       if(response?.status === 200){
         login(response.data)
         router.push('/dashboard');
