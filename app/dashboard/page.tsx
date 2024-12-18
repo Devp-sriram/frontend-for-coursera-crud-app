@@ -83,20 +83,20 @@ export default function DashboardPage() {
           <tbody>
             {employees.map((emp : Data) => (
               <tr key={emp._id} className="border-b">
-                <td className="p-3">
+                <td className="px-3 py-6">
                   {( edit.status && edit.id === emp._id )? (
                     <>
                     <input
                       type="text"
                       value={employeDetails.firstname}
                       onChange={(e) =>setEmployeDetails(prev => ({...prev, firstname: e.target.value }))}
-                      className="w-full p-2 border rounded text-black"
+                      className="w-full md:p-2 border rounded text-black"
                     />
                     <input
                       type="text"
                       value={employeDetails.lastname}
                       onChange={(e) =>setEmployeDetails(prev => ({...prev, lastname: e.target.value,}))}
-                      className="w-full p-2 border rounded text-black"
+                      className="w-full md:p-2 border rounded text-black"
                     />
                     </>
                   ) : (
@@ -110,7 +110,7 @@ export default function DashboardPage() {
                         onChange={(e) => setEmployeDetails(prev => ({...prev, dep: e.target.value}))}
                         className="text-black rounded"
                       >
-                        <option value="">Select Department</option>
+                        <option value="">Department</option>
                         <option value="dentist">Dentist</option>
                         <option value="dermatologist">Dermatologist</option>
                         <option value="gynecologist">Gynecologist</option>
@@ -119,7 +119,7 @@ export default function DashboardPage() {
                       <span>{emp.dep}</span>
                     )}
                 </td>
-              <td className="p-3 flex justify-end items-center space-x-2">
+              <td className="p-8 flex justify-center items-center space-x-2">
                   {!edit.status &&
                   <>
   

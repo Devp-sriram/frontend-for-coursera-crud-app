@@ -45,12 +45,14 @@ const PasswordErr = ({ value }: { value: any }) => {
     e.preventDefault();
     try{
       const response = await fetchData(email,password); 
-      if(response){
+      if(response?.status === 200){
         login(response.data);
     
         if(response.status === 200){
           router.push('/dashboard')
-        };
+        }else{
+            setErr(response?.data.message) 
+        }
       }
     }catch(error: any){
       setErr(error);

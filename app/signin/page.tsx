@@ -39,8 +39,8 @@ export default function page(){
 }
 
   return (
-   <div className="w-1/2 h-1/2 p-10 flex justify-center items-start">
-    <div className="w-full lg:w-1/2 xl:w-1/3 p-4 justify-center items-center border-gray-500 border-solid border-2 rounded">
+   <div className="w-full h-full p-10 flex justify-center items-start ">
+    <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 justify-center items-center border-gray-500 border-solid border-2">
      <form onSubmit={handleSubmit} className="flex flex-col w-full gap-2">
       <label>Email</label>
       <input 
@@ -53,7 +53,7 @@ export default function page(){
       <label>Password</label>
       <input 
         type="password" 
-        placeholder="min 8 & Atleast"
+        placeholder="min 8 & atleast 1 Uppercase"
         value={password} 
         onChange={(e)=>setPassword(e.target.value)}
         onBlur ={()=>setIsTouched(true)}

@@ -40,11 +40,11 @@ export default function AddEmployee(){
   }
 
     return (
-      <div className='w-full flex flex-col justify-center items-center'>
-        <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 justify-center items-center border-gray-500 border-solid border-2" >
-          <h1 className='justify-center'>Add new Employees</h1>
-          <form onSubmit={handleSubmit} className='flex flex-col' >
-            <label>firstname</label>
+      <div className='w-full flex flex-col justify-center items-center p-6'>
+        <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4 justify-center items-center border-gray-500 border-solid border-2" >
+          <h1 className='justify-center py-2'>Add new Employees</h1>
+          <form onSubmit={handleSubmit} className='flex flex-col w-full gap-2' >
+            <label>Firstname</label>
             <input 
               type='text'
               value={employeDetails.firstname}
@@ -56,7 +56,7 @@ export default function AddEmployee(){
               className="text-black rounded"
             />
 
-            <label>lastname</label>
+            <label>Lastname</label>
             <input 
               type='text' 
               value={employeDetails.lastname}
@@ -82,7 +82,7 @@ export default function AddEmployee(){
             <button 
               type='submit' 
               disabled ={!validateEmployeDetails} 
-              className="rounder w-full px-4 my-2 rounded-2xl border-gray-500 border-solid border-2 bg-red-500"
+              className="rounder w-full px-4 my-4 rounded-2xl border-gray-500 border-solid border-2 bg-red-500"
             >
               Add new Employee
             </button>
