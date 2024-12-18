@@ -8,23 +8,23 @@ export interface Data{
   firstname : string,
   lastname : string,
   dep : string,
-  _id : string,
+  _id ?: string,
 }
 
-export interface User{
-    _id: string,
-    email: string,
-    password: string,
-    company: string,
-    data: [Data],
-    createdAt: string,
-    updatedAt:string,
-    __v: number 
+export type User = {
+    _id : string ,
+    email : string ,
+    password : string ,
+    company : string,
+    data : Data[]| any[],
+    createdAt : string ,
+    updatedAt :string ,
+    __v : number 
 }
 
 export interface AuthState {
   isAuthenticated: boolean;
-  user: any;
+  user: User ;
 }
 
 const AuthContext : any = createContext({ isAuthenticated: false, user: null });
@@ -32,7 +32,16 @@ const AuthContext : any = createContext({ isAuthenticated: false, user: null });
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
-    user: "",
+    user: {
+      _id : "",
+      email : "",
+      password : "",
+      company : "",
+      data : [],
+      createdAt :"",
+      updatedAt : "",
+      __v : 0 
+    }
   });
 
   useEffect(() => {
@@ -46,7 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   
 
-  const login = (user: any) :void => {
+  const login = (user: User) : void => {
     setAuthState(prevState => ({
       ...prevState,
       isAuthenticated: true,
@@ -56,12 +65,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
 
-
   const create = (newData: Data[]) => {
-    const updatedUser = {
+    const updatedUser :User = {
       ...authState.user,
-      data: [...authState.user.data, ...newData.filter(item => 
-        !authState.user.data.some((existingItem : Data) => existingItem._id === item._id)
+      data: [...authState.user.data, ...newData.filter( (item : Data) => 
+        !(authState.user?.data ?? []).some((existingItem : Data) => existingItem._id === item._id)
       )]  
     };
 
@@ -76,7 +84,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try{
       const response = await fetchData(authState.user.email,authState.user.password)
       if(response){
-        let updatedEmployee = response.data.data.find( (data : Data) => data._id === id)
+        const updatedEmployee = response.data.data.find( (data : Data) => data._id === id)
         if (updatedEmployee){
           setAuthState(prevState => ({
             ...prevState,
@@ -91,7 +99,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
         localStorage.setItem('user', JSON.stringify(response.data));  
       }
-    }catch(error: any){
+    }catch(error: unknown){
       console.log(error)
     }
   };
@@ -114,7 +122,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
   const logout = () => {
-    setAuthState({ isAuthenticated: false, user: null });
+    setAuthState({ isAuthenticated: false, user: {
+      _id : "",
+      email : "",
+      password : "",
+      company : "",
+      data : [],
+      createdAt :"",
+      updatedAt : "",
+      __v : 0 
+      }
+    });
     localStorage.removeItem('user');
   };
 

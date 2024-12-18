@@ -12,13 +12,13 @@ export async function fetchData(email : string , password : string){
   try{
       const response : AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`,{email,password});
       return response
-    }catch(error: any){
+    }catch(error: unknown){
       console.log(error);
     }
 }
 
 
-export default function page(){
+export default function Page(){
  
  const [email,setEmail] = useState('')
  const [password,setPassword] = useState('');

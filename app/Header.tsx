@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useAuth } from './context/AuthContext';
 
-export default function header(){
+export default function Header(){
 
   const { isAuthenticated, user } = useAuth();
   const { logout } = useAuth();

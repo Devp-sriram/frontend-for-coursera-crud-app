@@ -9,7 +9,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 
-export default function DashboardPage() {
+export default function Page() {
 
 
   const { isAuthenticated , user } = useAuth();
@@ -48,7 +48,7 @@ export default function DashboardPage() {
       const response : AxiosResponse = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/updateEmployee/${user._id}/${edit.id}`,{...employeDetails});
       console.log(response);
       await update(edit.id);
-    }catch(error: any){
+    }catch(error: unknown){
       console.log(error);
     }
  
@@ -61,7 +61,7 @@ export default function DashboardPage() {
       if(response.status === 200){
         await deleteData(id);
       }
-    }catch(error: any){
+    }catch(error: unknown){
       console.log(error);
     }
 

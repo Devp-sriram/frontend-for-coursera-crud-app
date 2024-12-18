@@ -1,5 +1,5 @@
 import { useAuth , Data } from '../context/AuthContext';
-import { useState } from 'react'
+import React,{ useState } from 'react'
 import axios, { AxiosResponse } from 'axios';
 import dotenv from 'dotenv'
 dotenv.config()
@@ -16,11 +16,11 @@ export default function AddEmployee(){
   });
 
   const clearEmployeDetails = () => {
-    setEmployeDetails(prevState =>({
+    setEmployeDetails(( prevState :Data) =>({
         ...prevState,
         firstname : '',
         lastname  : '',
-        dep : ''
+        dep : '',
       })
     )
   }
@@ -29,14 +29,14 @@ export default function AddEmployee(){
     return employeDetails.firstname && employeDetails.lastname && employeDetails.dep != "" ? true : false
   }
 
-  const handleSubmit = async (e:any)=>{
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try{
       const response : AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/addEmployee/${user._id}`,{...employeDetails});
       console.log(response);
       clearEmployeDetails()
       create(response.data.allEmployees);
-    }catch(error: any){
+    }catch(error: unknown){
       console.log(error);
     }
   }
@@ -45,7 +45,7 @@ export default function AddEmployee(){
       <div className='w-full flex flex-col justify-center items-center p-6'>
         <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4 justify-center items-center border-gray-500 border-solid border-2" >
           <h1 className='justify-center py-2'>Add new Employees</h1>
-          <form onSubmit={handleSubmit} className='flex flex-col w-full gap-2' >
+          <form onSubmit={(e) => handleSubmit(e)} className='flex flex-col w-full gap-2' >
             <label>Firstname</label>
             <input 
               type='text'

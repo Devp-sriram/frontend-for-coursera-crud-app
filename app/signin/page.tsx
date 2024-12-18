@@ -5,7 +5,7 @@ import axios from 'axios';
 import dotenv from 'dotenv'
 dotenv.config()
 
-export default function page(){
+export default function Page(){
  
  const [email,setEmail] = useState('')
  const [password,setPassword] = useState('');
