@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       updatedAt : "",
       __v : 0 
     }
-  });
+  })
 
   useEffect(() => {
       
