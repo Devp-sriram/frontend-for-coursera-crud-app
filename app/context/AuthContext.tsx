@@ -25,7 +25,13 @@ export type User = {
 export interface AuthState {
   isAuthenticated: boolean;
   user: User ;
+  login ?: (user: User) => void;
+  logout ?: () => void;
+  create ?: (userData: Data[]) => void;
+  update ?: (id: string ) => Promise<void>;
+  deleteData ?: (id:string) => Promise<void>;
 }
+
 
 const AuthContext = createContext<AuthState>({ isAuthenticated: false, user: 
     { 
@@ -37,7 +43,7 @@ const AuthContext = createContext<AuthState>({ isAuthenticated: false, user:
       createdAt :"",
       updatedAt : "",
       __v : 0 
-    } 
+    },
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -52,7 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       createdAt :"",
       updatedAt : "",
       __v : 0 
-    }
+    },
   })
 
   useEffect(() => {
@@ -66,7 +72,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   
 
-  const login = (user: User) : void => {
+  const login = (user: User) => {
     setAuthState(prevState => ({
       ...prevState,
       isAuthenticated: true,

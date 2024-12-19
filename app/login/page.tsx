@@ -14,7 +14,7 @@ export default function Page(){
  const [err,setErr]= useState('');
  const router = useRouter();
 
-const { login  } = useAuth()
+const { login  } = useAuth() 
 
 const PasswordErr = ({ value }: { value : string }) => {
   return (
@@ -38,10 +38,9 @@ const PasswordErr = ({ value }: { value : string }) => {
       if(response?.status === 200){
         login(response.data)
         router.push('/dashboard');
-        
       }
-    }catch(error: unknown){
-      setErr(error?.response.data);
+    }catch(error: unknown ){
+      setErr(error?.response?.data);
     }
   }
 
