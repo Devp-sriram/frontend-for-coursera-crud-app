@@ -8,7 +8,7 @@ import AddEmployee from './AddEmployee';
 import dotenv from 'dotenv'
 dotenv.config();
 
-``
+
 export default function Page() {
 
 
@@ -31,6 +31,9 @@ export default function Page() {
     return <div>Loading...</div>;
   }
 
+  if (isAuthenticated === false) {
+    redirect('/login');
+  } 
   
 
    

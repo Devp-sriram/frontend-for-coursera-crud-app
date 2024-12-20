@@ -68,7 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setAuthState({ ...authState,isAuthenticated: true, user: JSON.parse(storedUser) });
     }
     
-  }, [authState]);
+  }, []);
 
   
 
