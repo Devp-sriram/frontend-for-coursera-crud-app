@@ -31,9 +31,7 @@ export default function Page() {
     return <div>Loading...</div>;
   }
 
-  if (isAuthenticated === false) {
-    redirect('/login');
-  } 
+
   
 
    
