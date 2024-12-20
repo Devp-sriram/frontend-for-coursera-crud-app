@@ -8,7 +8,7 @@ import AddEmployee from './AddEmployee';
 import dotenv from 'dotenv'
 dotenv.config();
 
-
+``
 export default function Page() {
 
 
@@ -30,7 +30,6 @@ export default function Page() {
   if (!user || !user.data) {
     return <div>Loading...</div>;
   }
-
 
   
 

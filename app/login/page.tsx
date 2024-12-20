@@ -2,7 +2,7 @@
 import { useState } from "react";
 import axios from 'axios';
 import { useAuth } from "../context/AuthContext";
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -12,7 +12,6 @@ export default function Page(){
  const [email,setEmail] = useState('')
  const [password,setPassword] = useState('');
  const [err,setErr]= useState('');
- const router = useRouter();
 
 const { login  } = useAuth() 
 
@@ -37,7 +36,7 @@ const PasswordErr = ({ value }: { value : string }) => {
       const response  = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`,{email,password});
       if(response?.status === 200){
         login(response?.data)
-        router.push('/dashboard');
+        redirect('/dashboard');
       }
     }catch(error: unknown ){
       setErr(error?.response?.data);
