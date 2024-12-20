@@ -6,7 +6,7 @@ import { useAuth , Data } from '../context/AuthContext'
 import axios,{AxiosResponse} from 'axios';
 import AddEmployee from './AddEmployee';
 import dotenv from 'dotenv'
-dotenv.config()
+dotenv.config();
 
 
 export default function Page() {
