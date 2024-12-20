@@ -36,7 +36,7 @@ const PasswordErr = ({ value }: { value : string }) => {
     try{
       const response  = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`,{email,password});
       if(response?.status === 200){
-        login(response.data)
+        login(response?.data)
         router.push('/dashboard');
       }
     }catch(error: unknown ){

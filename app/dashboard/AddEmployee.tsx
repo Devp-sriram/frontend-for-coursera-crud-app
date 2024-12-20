@@ -35,7 +35,7 @@ export default function AddEmployee(){
       const response : AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/addEmployee/${user._id}`,{...employeDetails});
       console.log(response);
       clearEmployeDetails()
-      create(response.data.allEmployees);
+      create(response?.data.allEmployees);
     }catch(error: unknown){
       console.log(error);
     }
