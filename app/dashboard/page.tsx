@@ -27,15 +27,15 @@ export default function Page() {
       id : "",
   });
 
-
-  if (!isAuthenticated) {
-    redirect('/login');
-  } 
-  
   if (!user || !user.data) {
     return <div>Loading...</div>;
   }
+
+  if (isAuthenticated === false) {
+    redirect('/login');
+  } 
   
+
    
   const employees = user?.data;
   
