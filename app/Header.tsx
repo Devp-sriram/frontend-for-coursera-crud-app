@@ -11,7 +11,7 @@ export default function Header(){
   <nav className="w-full h-6 flex justify-between p-2">
     <ul className="flex gap-4 ">
       <li><Link href="/">Home</Link></li>
-      { isAuthenticated &&
+      { isAuthenticated === true &&
       <li> <Link href="/dashboard">dashboard</Link> </li> 
       }
       </ul>
