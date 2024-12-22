@@ -27,8 +27,11 @@ Clone the repository:
 ```bash
 git clone https://github.com/Devp-sriram/frontend-for-coursera-crud-app.git
 cd frontend-for-coursera-crud-app
+```
 
+Install dependencies
 
+```bash
 npm install
 # or
 yarn install
@@ -36,11 +39,11 @@ yarn install
 pnpm install
 # or
 bun install
+```
 
+to run the development server:
 
-First, run the development server:
-
-
+```bash
 npm run dev
 # or
 yarn dev
@@ -50,26 +53,16 @@ pnpm dev
 bun dev
 ```
 
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-.
-├── public              # Public assets such as images, fonts, etc.
-├── src
-│   ├── components      # React components
-│   ├── pages           # Next.js pages
-│   ├── styles          # Global styles
-│   ├── utils           # Utility functions and helpers
-│   └── ...             # Other directories and files
-├── .env.local          # Environment variables (local)
-├── next.config.js      # Next.js configuration
-├── package.json        # Project dependencies and scripts
-└── README.md           # Project documentation
 
 
 Environment Variables
 Create a .env.local file in the root of the project and add your configurations:
 
 ```bash
-NEXT_PUBLIC_API_URL=<your_api_url>
+NEXT_PUBLIC_BACKEND_URL=<your_api_url>
 ```
+for back-end refer this repo : https://github.com/Devp-sriram/coursera-crud-project
 
