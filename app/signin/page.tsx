@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import dotenv from 'dotenv'
-dotenv.config()
+dotenv.config();
 
 export default function Page(){
  
