@@ -127,7 +127,7 @@ export default function Page() {
   
                   <button
                     onClick={()=>{
-                      handleEdit(emp._id)
+                      handleEdit(emp?._id)
                       setEmployeDetails((prev)=>({...prev,...emp}))
                       }}
                     className="px-2 py-1 bg-green-400 text-white rounded hover:bg-green-700 transition duration-300"
