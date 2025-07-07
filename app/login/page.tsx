@@ -1,4 +1,5 @@
 'use client'
+
 import { useState } from "react";
 import axios from 'axios';
 import { useAuth } from "../context/AuthContext";
@@ -34,9 +35,10 @@ const PasswordErr = ({ value }: { value : string }) => {
  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try{
-      const response  = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`,{email,password});
+      const response  = await axios.post(`/api/dashboard`,{email,password});
       if(response?.status === 200){
-        login(response.data)
+        // console.log(response.data);
+        login(response.data.user)
         router.push('/dashboard');
       }
     }catch(error: unknown ){
@@ -46,7 +48,7 @@ const PasswordErr = ({ value }: { value : string }) => {
 
   return (
    <div className="w-full h-full p-10 flex justify-center items-start ">
-    <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 justify-center items-center border-gray-500 border-solid border-2">
+    <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 justify-center items-center border-gray-500 border-solid border-2 text-white">
      <form onSubmit={handleSubmit} className="flex flex-col w-full gap-2">
       <label>Email</label>
       <input 
@@ -54,14 +56,14 @@ const PasswordErr = ({ value }: { value : string }) => {
         placeholder="example@mail.com"
         value={email} 
         onChange={(e)=>setEmail(e.target.value)}
-        className="text-black rounded "
+        className="rounded "
       />
       <label>Password</label>
       <input 
         type="password"
         value={password} 
         onChange={(e)=>setPassword(e.target.value)}
-        className="text-black rounded"
+        className="rounded"
       />
       {err && <PasswordErr value={err}/>}
       <button type='submit' disabled ={!isValid()} className="rounder w-full px-4 my-2 rounded-2xl border-gray-500 border-solid border-2 bg-red-500">Submit</button>

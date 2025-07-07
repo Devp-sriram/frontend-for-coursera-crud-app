@@ -94,7 +94,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       ...prevState,
       user: updatedUser
     }));
-
   };
 
   const update = async (id : string)=>{
