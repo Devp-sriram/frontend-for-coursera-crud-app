@@ -30,7 +30,7 @@ export default function Page(){
  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try{
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/signin`,{email,password,company}); 
+    const response = await axios.post(`/api/signin`,{email,password,company}); 
     console.log(response);
       if(response.status === 200){
           router.push('/login')

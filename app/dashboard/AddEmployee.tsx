@@ -32,7 +32,7 @@ export default function AddEmployee(){
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try{
-      const response : AxiosResponse = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/addEmployee/${user._id}`,{...employeDetails});
+      const response : AxiosResponse = await axios.post(`/api/dashboard?id=${user._id}`,{...employeDetails});
       console.log(response);
       clearEmployeDetails()
       create(response?.data.allEmployees);

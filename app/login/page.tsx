@@ -35,7 +35,7 @@ const PasswordErr = ({ value }: { value : string }) => {
  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try{
-      const response  = await axios.post(`/api/dashboard`,{email,password});
+      const response  = await axios.post(`/api/login`,{email,password});
       if(response?.status === 200){
         // console.log(response.data);
         login(response.data.user)
