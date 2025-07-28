@@ -20,7 +20,7 @@ const { login  } = useAuth()
 const PasswordErr = ({ value }: { value : string }) => {
   return (
     <p className="text-white bg-red-300 rounded-xl justify-center p-1">
-      { value }
+      err
     </p>
   );
 };
@@ -38,7 +38,7 @@ const PasswordErr = ({ value }: { value : string }) => {
       const response  = await axios.post(`/api/login`,{email,password});
       if(response?.status === 200){
         // console.log(response.data);
-        login(response.data.user)
+        login(response.data)
         router.push('/dashboard');
       }
     }catch(error: unknown ){

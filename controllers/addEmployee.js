@@ -1,17 +1,15 @@
-import User from '../models/user.js';
+import employee from '@/models/employee';
 
 
-export default async function addEmployee(userId, newEmployee) {
- 
+export default async function addEmployee(employeeData) {
 
      try {
-        await User.findByIdAndUpdate(userId, {
-            $push: { data : newEmployee }
-      });
+        const data = new employee(employeeData);
+        await data.save();
      } catch (error) {
        console.error("Error adding employee:", error);
      }finally{
       console.log("Employee added successfully");
-      return {success :true , user : await User.findById(userId)}
+      return {success :true , user : await employeeData}
      };
 };

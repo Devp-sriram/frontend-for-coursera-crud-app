@@ -6,7 +6,7 @@ const connectDb = async ()=>{
    try{
        if(!process.env.DB_URL){
               throw new Error('Database URL is not defined in env');
-     }
+       }
        await mongoose.connect(process.env.DB_URL);
        console.log('connected to database');
    }catch(err){

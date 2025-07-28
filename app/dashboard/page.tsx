@@ -21,14 +21,14 @@ export default function Page() {
     id: "",
   });
 
-  if (!user || !user.data) {
+  if (!user) {
     return <div>Loading...</div>;
   }
 
   if (isAuthenticated === false) {
     redirect("/login");
   }
-  const employees = user?.data;
+  const employees = user?.data || [];
 
   const handleEdit = (empId: string) => {
     setEdit((prevState) => ({ ...prevState, status: true, id: empId }));
@@ -36,8 +36,7 @@ export default function Page() {
 
   const handleSave = async () => {
     try {
-      const response: AxiosResponse = await axios.put(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/updateEmployee/${user._id}/${edit.id}`,
+      const response: AxiosResponse = await axios.put(`api/dashboard/${user._id}/${edit.id}`,
         { ...employeDetails },
       );
       console.log(response);

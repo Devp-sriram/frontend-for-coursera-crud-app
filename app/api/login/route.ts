@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDb from '@/config/db';
-import User from '@/models/user';
+import company from '@/models/company';
 
 
 async function handler(req: NextRequest) {
@@ -13,6 +13,7 @@ async function handler(req: NextRequest) {
                 let body: { email?: string, password?: string } = {};
                 try {
                     body = await req.json();
+                    // console.log('body '+ body.email)
                 } catch (err) {
                     return NextResponse.json(
                         { error: "Lack of user input" },
@@ -22,9 +23,10 @@ async function handler(req: NextRequest) {
 
                 await connectDb(); // make sure this is a function that connects to your database
                 const { email, password } = body; // assuming password is sent in the request body
-                const user = await User.findOne({ email })
-
-                if (!user) { return NextResponse.json({ error: 'this email not already registerted, go to signin' }, { status: 404 }) }
+                const user = await company.findOne({ email })
+                // console.log(`user`, user)
+                
+                if ( !user) { return NextResponse.json({ error: 'this email not already registerted, go to signin' }, { status: 404 }) }
 
                 let pw = user.password;
                 // console.log(pw);

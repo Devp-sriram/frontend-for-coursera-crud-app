@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDb from '@/config/db';
-import User from '@/models/user';
+import Company from '@/models/company';
 import CheckUser from '../../../controllers/checkuser.js'
 
 async function handler(req: NextRequest) {
@@ -28,7 +28,7 @@ async function handler(req: NextRequest) {
                     return NextResponse.json({ error:'user aldreay exist'},{status:400});
                 }
                 try{
-                  const newUser = new User({ email , password , company });
+                  const newUser = new Company({ email , password , company });
                   await newUser.save();
                   
                   if(newUser){
