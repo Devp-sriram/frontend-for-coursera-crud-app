@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDb from '@/config/db';
-import User from '@/models/user';
+import Company from '@/models/company';
 import addEmployee from '../../../controllers/addEmployee'
 import { ObjectId } from 'mongodb';
+import employee from '@/models/employee';
 
 
 async function handler(req: NextRequest) {
@@ -13,10 +14,16 @@ async function handler(req: NextRequest) {
             try {
                 const url = new URL(req.url);
                 const id = url.searchParams.get('id');
-                let body: { firstname:string , lastname:string , dep : string } = {};
+                let body: { firstname?:string , lastname?:string , role?: string } = {};
           
-                if(!id){ res.status(401).send('please login')}; 
-                const userId = ObjectId.createFromHexString(id);
+                if(!id){ 
+                    return NextResponse.json(
+                        {error:'please login'},
+                        {status:401}
+                    )
+                }; 
+                console.log(id)
+                const companyId = ObjectId.createFromHexString(id);
 
                 try {
                     body = await req.json();    
@@ -31,15 +38,16 @@ async function handler(req: NextRequest) {
                         { status: 400 }
                     );
                 }
+                const employeeData = {companyId , ...body}
 
                 await connectDb(); // make sure this is a function that connects to your database
-                const res = await addEmployee(userId,{ firstname : body.firstname , lastname : body.lastname , dep : body.dep })
+                const res = await addEmployee(employeeData)
                 console.log(res)
                 if(res?.success){
                     return NextResponse.json({    
                             message: `Employee ${body.firstname} ${body.lastname} added successfully`,
-                            employee: { firstname : body.firstname , lastname : body.lastname , dep : body.dep },
-                            allEmployees : res.data,
+                            employee: { firstname : body.firstname , lastname : body.lastname , role : body.role },
+                            allEmployees : res.user,
                             },{status:201})
                 }
                 return NextResponse.json({ error:`error adding employee`},{status:400}); // send the data as JSON

@@ -50,7 +50,7 @@ export default function Page(){
         placeholder="example@mail.com"
         value={email} 
         onChange={(e)=>setEmail(e.target.value)}
-        className="text-black rounded "
+        className="rounded "
       />
       <label>Password</label>
       <input 
@@ -59,7 +59,7 @@ export default function Page(){
         value={password} 
         onChange={(e)=>setPassword(e.target.value)}
         onBlur ={()=>setIsTouched(true)}
-        className="text-black rounded"
+        className="rounded"
       />  
         {password.length <= 8 && isTouched && <PasswordErr/> }
       <label>Company</label>
@@ -68,7 +68,7 @@ export default function Page(){
         placeholder="you&me.co"
         value={company} 
         onChange={(e)=>setCompany(e.target.value)}
-        className="text-black rounded"
+        className="rounded"
       />
       <button type='submit' disabled ={!isValid()} className="rounder w-full px-4 my-2 rounded-2xl border-gray-500 border-solid border-2 bg-red-500">Submit</button>
      </form>
