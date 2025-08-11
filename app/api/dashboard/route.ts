@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDb from '@/config/db';
 import Company from '@/models/company';
+import Employee from '@/models/employee';
 import addEmployee from '../../../controllers/addEmployee'
 import { ObjectId } from 'mongodb';
 import employee from '@/models/employee';
@@ -9,7 +10,20 @@ import employee from '@/models/employee';
 async function handler(req: NextRequest) {
     const { method } = req; 
     switch (method) {
-
+        case 'GET':
+          try{
+            const url = new URL(req.url);
+            const id = url.searchParams.get('id');
+            await connectDb();
+            const res = await Employee.find({companyId: new ObjectId(id)});
+            // console.log(res)
+            return NextResponse.json({res},{status:200})
+          }catch(err){
+            console.error('Error fetching users:', err);
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+          } 
+          break
+        
         case 'POST':
             try {
                 const url = new URL(req.url);

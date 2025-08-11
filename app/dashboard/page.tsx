@@ -1,6 +1,11 @@
 "use client";
+
+import useSWR from 'swr';
+import { fetchData } from '@/middleware/client'
+import { useSession } from 'next-auth/react'
+
 import { redirect } from "next/navigation";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { useAuth, Data } from "../context/AuthContext";
 import axios, { AxiosResponse } from "axios";
 import AddEmployee from "./AddEmployee";
@@ -8,9 +13,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export default function Page() {
-  const { isAuthenticated, user } = useAuth();
-  const { update, deleteData } = useAuth();
-
+  const { data:session ,status }  = useSession();
+  const userId = session?.user?._id; // <-- use _id from session
+  
+  const { data , error , loading} = useSWR(userId ? `api/dashboard?id=${userId}`: null ,fetchData);
   const [employeDetails, setEmployeDetails] = useState({
     firstname: "",
     lastname: "",
@@ -20,15 +26,11 @@ export default function Page() {
     status: false,
     id: "",
   });
-
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
-  if (isAuthenticated === false) {
+  
+  if (!status) {
     redirect("/login");
   }
-  const employees = user?.data || [];
+  const employees = data?.res || [];
 
   const handleEdit = (empId: string) => {
     setEdit((prevState) => ({ ...prevState, status: true, id: empId }));
@@ -65,7 +67,7 @@ export default function Page() {
       <h1 className="justify-center">Employees</h1>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-black shadow-md rounded-lg overflow-hidden">
+        <table className="min-w-full shadow-md rounded-lg overflow-hidden">
           <thead className="bg-gray-500">
             <tr>
               <th className="p-3">Name</th>
@@ -74,7 +76,7 @@ export default function Page() {
             </tr>
           </thead>
           <tbody>
-            {employees.map((emp: Data) => (
+             {employees.map((emp: Data) => (
               <tr key={emp._id} className="border-b">
                 <td className="px-3 py-6">
                   {edit.status && edit.id === emp._id ? (

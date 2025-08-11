@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDb from '@/config/db';
 import Company from '@/models/company';
 import CheckUser from '../../../controllers/checkuser.js'
+import { hash } from "bcryptjs"
 
 async function handler(req: NextRequest) {
     const { method } = req;
@@ -12,7 +13,7 @@ async function handler(req: NextRequest) {
             try { 
                 try {
                     body = await req.json();
-                    console.log(body)
+                    //console.log(body)
                 } catch (err) {
                     return NextResponse.json(
                         { error: "Lack of user input" },
@@ -27,8 +28,10 @@ async function handler(req: NextRequest) {
                      // console.log('fn'+ await CheckUser(email))
                     return NextResponse.json({ error:'user aldreay exist'},{status:400});
                 }
+                
+                const hashedPassword = await hash(password , 12);
                 try{
-                  const newUser = new Company({ email , password , company });
+                  const newUser = new Company({ email , password : hashedPassword , company });
                   await newUser.save();
                   
                   if(newUser){

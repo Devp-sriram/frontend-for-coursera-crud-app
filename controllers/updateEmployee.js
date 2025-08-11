@@ -6,8 +6,7 @@ export default async function updateEmployee(userId, employeeId ,newDetails){
           const result = await User.updateOne(
             {_id:userId, 'data._id':employeeId},
             {$set : newDetails}
-          )   
-
+          )
           if(result.modifiedCount === 0) {
             return { message: "Employee not found or no changes made" };
           }

@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./Header";
-import { AuthProvider } from "./context/AuthContext";
+import AuthLayout from "../components/AuthLayout.tsx";
 import { Analytics } from "@vercel/analytics/next"
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  preload: false,
+  variable: '--font-inter' 
 });
 
 export const metadata: Metadata = {
@@ -25,19 +21,19 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {               
+}>) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.className} antialiased`}
       >
-      <Analytics/>
-      <AuthProvider>
+      <AuthLayout>
+        <Analytics/>
         <main>
           <Header/>  
           {children}
         </main>
-      </AuthProvider>
+      </AuthLayout>
       </body>
     </html>
   );

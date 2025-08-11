@@ -1,4 +1,11 @@
-import { useAuth } from '../context/AuthContext';
+'use client'
+// import { useAuth } from '../context/AuthContext';
+//
+
+import useSWR from 'swr';
+import { fetchData } from '@/middleware/client'
+import { useSession } from 'next-auth/react'
+
 import React , { useEffect , useState } from 'react'
 import axios, { AxiosResponse } from 'axios';
 import dotenv from 'dotenv'
@@ -6,9 +13,8 @@ dotenv.config()
 
 
 export default function AddEmployee(){
-  const { create } = useAuth();
-
-  const { user } = useAuth();
+//  const { create } = useAuth();
+//  const { user } = useAuth();
   const [ employeDetails , setEmployeDetails] = useState({
     firstname : "",
     lastname : "",
@@ -38,11 +44,10 @@ export default function AddEmployee(){
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try{
-      console.log(`user`,user._id);
       const response : AxiosResponse = await axios.post(`/api/dashboard?id=${user._id}`,employeDetails);
       console.log(response);
       if(response?.status === 200){
-        create(employeDetails);
+        //  create(employeDetails);
         clearEmployeDetails()
       }
     }catch(error: unknown){
@@ -50,22 +55,22 @@ export default function AddEmployee(){
     }
   }
 
-  useEffect(()=>{
-    console.log( 'id', user._id)
-  },[user])
+//  useEffect(()=>{
+//    console.log( 'id', user._id)
+//  },[user])
 
     return (
       <div className='w-full flex flex-col justify-center items-center p-6'>
         <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4 justify-center items-center border-gray-500 border-solid border-2" >
           <h1 className='justify-center py-2'>Add new Employees</h1>
-          <form onSubmit={(e) => handleSubmit(e)} className='flex flex-col w-full gap-2 text-white'>
+          <form onSubmit={(e) => handleSubmit(e)} className='flex flex-col w-full gap-2'>
             <label>Firstname</label>
             <input 
               name='firstname'
               type='text'
               value={employeDetails.firstname}
               onChange={handleChange}   
-              className=" rounded"
+              className="rounded border-gray-500"
             />
 
             <label>Lastname</label>

@@ -1,18 +1,24 @@
 import mongoose from "mongoose";
-import dotenv from 'dotenv';
-dotenv.config();
 
-const connectDb = async ()=>{
-   try{
-       if(!process.env.DB_URL){
-              throw new Error('Database URL is not defined in env');
-       }
-       await mongoose.connect(process.env.DB_URL);
-       console.log('connected to database');
-   }catch(err){
-       throw err
-   }
+const DB_URL = process.env.DB_URL;
+
+if (!DB_URL) {
+  throw new Error("Please define the DB_URI environment variable");
 }
 
-export default connectDb 
+let cached = global.mongoose;
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
 
+export default async function dbConnect() {
+  if (cached.conn) return cached.conn;
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(DB_URL, {
+      bufferCommands: false,
+    }).then((mongoose) => mongoose);
+  }
+  cached.conn = await cached.promise;
+  return cached.conn;
+}

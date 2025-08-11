@@ -1,15 +1,7 @@
-import User from '../models/employee.js'
+import dbConnect from "../config/db.ts";
+import Company from "@/models/company";
 
-
-export default async function CheckUser(email) {
-    try {
-        const user = await User.findOne({ email : email });
-        console.log('User'+user);
-        if (user) {
-            return user;
-        }
-        return false;
-    } catch(error){
-        return "user not found", error.message
-    }
+export default async function checkUser(email) {
+  await dbConnect();
+  return Company.findOne({ email }).lean();
 }
