@@ -13,8 +13,8 @@ dotenv.config()
 
 
 export default function AddEmployee(){
-//  const { create } = useAuth();
-//  const { user } = useAuth();
+  const { data:session ,status }  = useSession();
+  const userId = session?.user?._id; // <-- use _id from session
   const [ employeDetails , setEmployeDetails] = useState({
     firstname : "",
     lastname : "",
@@ -44,7 +44,7 @@ export default function AddEmployee(){
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try{
-      const response : AxiosResponse = await axios.post(`/api/dashboard?id=${user._id}`,employeDetails);
+      const response : AxiosResponse = await axios.post(`/api/dashboard?id=${userId}`,employeDetails);
       console.log(response);
       if(response?.status === 200){
         //  create(employeDetails);
