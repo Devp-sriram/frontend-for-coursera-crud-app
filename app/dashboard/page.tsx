@@ -38,11 +38,11 @@ export default function Page() {
 
   const handleSave = async () => {
     try {
-      const response: AxiosResponse = await axios.put(`api/dashboard/${user._id}/${edit.id}`,
+      const response: AxiosResponse = await axios.put(`api/dashboard?id=${edit.id}`,
         { ...employeDetails },
       );
       console.log(response);
-      await update(edit.id);
+      //await update(edit.id);
     } catch (error: unknown) {
       console.log(error);
     }
@@ -51,12 +51,9 @@ export default function Page() {
   const handledelete = async (id: string) => {
     try {
       const response: AxiosResponse = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/deleteEmployee/${user._id}/${id}`,
+        `api/dashboard?id=${id}`,
       );
       console.log(response);
-      if (response.status === 200) {
-        await deleteData(id);
-      }
     } catch (error: unknown) {
       console.log(error);
     }
@@ -145,7 +142,7 @@ export default function Page() {
                       </button>
 
                       <button
-                        onClick={async () => await handledelete(emp._id)}
+                        onClick={()=>handledelete(emp?._id)}
                         className="px-2 py-1 bg-red-400 text-white rounded hover:bg-red-700 transition duration-300"
                       >
                         Delete

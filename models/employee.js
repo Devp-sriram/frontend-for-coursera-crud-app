@@ -21,6 +21,10 @@ const employeeScheme = new Schema(
     role:{
       type:String,
     },
+    isDeleted :{
+      type : Number,
+      default : 0
+    }
     // salary:{
     //   type:Number,
     // },
